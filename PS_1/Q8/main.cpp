@@ -4,7 +4,7 @@
 #include <string>
 #include <cmath>
 #include <cassert>
-#define size 2
+#define size 3
 
 double vec_mult(double* x1, double* x2){
     // Vector dot product function
@@ -16,6 +16,7 @@ double vec_mult(double* x1, double* x2){
 }
 
 double* get_row(double** A, int i, int j){
+    // Get 
     double* row;
     row = new double [size];
     for (int j = 0; j < size; j++){
@@ -51,6 +52,10 @@ double** mat_mult(double** A, double** B){
             prod[i][j] = vec_mult(temp1,temp2);
         }
     }
+
+    // Garbage collection
+    delete temp1, temp2;
+
     return prod;
 }
 
@@ -74,7 +79,9 @@ int main(){
     // Define variables
     double** A;
     double** B;
+    double** prod;
 
+    // Initialise memory
     A = new double* [size];
     B = new double* [size];
     for (int i = 0; i < size; i++){
@@ -106,8 +113,20 @@ int main(){
     std::cout << "The second array you entered is: \n";
     print_mat(B);
 
-    double** prod;
     prod = mat_mult(A,B);
-    std::cout << "\n he matrix product is: \n";
+    std::cout << "\nThe matrix product is: \n";
     print_mat(prod);
+
+    // Garbage collection
+    for (int i = 0; i < size; i++){
+        delete[] A[i];
+        delete[] B[i];
+        delete[] prod[i];
+    }   
+
+    delete[] A;
+    delete[] B;
+    delete[] prod;
+
+    return 0;
 }
