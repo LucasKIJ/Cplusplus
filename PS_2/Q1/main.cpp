@@ -16,5 +16,8 @@ int main(){
     std::cout << "The memory address is: " << pNum << std::endl;
     std::cout << "The value in memory is: " << *pNum << std::endl;
 
+    // Garbage collection
+    delete pNum;
+
     return 0;
 }

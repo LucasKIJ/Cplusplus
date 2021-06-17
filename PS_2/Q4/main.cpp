@@ -5,7 +5,7 @@
 #include <cassert>
 
 double vec_mult(double* x1, double* x2, int n){
-    int product = 0;
+    double product = 0;
     for (int i = 0; i < n; i++){
         product = product + x1[i] * x2[i];
     }
