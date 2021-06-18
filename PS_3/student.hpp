@@ -5,11 +5,16 @@
 #include <string>
 class student{
 	public:
-		std::string name, college, status, degree;
+		std::string name, college, degree;
 		double library_fines, tuition_fees;
 
 		student();
-		void total_battels();
+		virtual void TotalBattels();
+		void SetStatus(std::string status);
+		std::string GetStatus();
+
+	protected:
+		std::string mStatus;
 };
 #endif
 
