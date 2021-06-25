@@ -3,21 +3,36 @@
 #include <cassert>
 #include "Exception.hpp"
 #include "Vector.hpp"
+#include "Matrix.hpp"
+
 
 int main(int argc, char* argv[])
 {
   //This would  produce a compiler warning (there is no default constructor)
-  // Vector badly_formed;
+  
 
-  Vector a_vector(2);
-  a_vector(1)=10.0;
-  a_vector(2)=20.0;
+  
+  try
+  {
+  }
+  catch (Exception &ex)
+  {
+      ex.DebugPrint();
+  }
+/*
+  Matrix A_matrix = Matrix(3,3);
   
   //Show that friends and methods can be used to do the same thing
   assert ( a_vector.norm() == norm(a_vector));
   assert ( a_vector.norm(3) == norm(a_vector, 3));
 
+
+  Matrix B_matrix(3,3);
+  B_matrix = A_matrix * A_matrix;
+  print(B_matrix);
+
   std::cout << "a_vector = " << a_vector << "\n";
+  std::cout << "a_vector = " << a_vector(1) << "\n";
 
   Vector bigger_vector(3);
   Vector smaller_vector(1);
@@ -46,4 +61,8 @@ int main(int argc, char* argv[])
       ex.DebugPrint();
   }
   exit(0);
+  */
+  return 0;
+
 }
+
