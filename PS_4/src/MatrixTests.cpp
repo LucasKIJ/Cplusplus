@@ -4,7 +4,7 @@ namespace MatrixTests
 void RunTests()
 {
   Equality();
-  //Add();
+  Add();
 }
 
 void Equality()
@@ -21,10 +21,8 @@ void Equality()
       B.setValue(temp, i,j);
     }
   }
-  print(A);
-  print(B);
 
-  if (&A== &B && &B== &A)
+  if (A==B)
   {
     std::cout << "Test - " << __func__ << ", Result: Passed." << std::endl;
   }

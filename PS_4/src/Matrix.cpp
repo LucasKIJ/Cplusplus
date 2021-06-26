@@ -574,18 +574,15 @@ int Matrix::argColMax(int col, int row, bool abs_true) const
 
 
 /////////////////// ********** Boolean Operators *********** /////////////////////
-bool operator==(const Matrix m1, const Matrix m2)
+bool operator==(const Matrix& m1, const Matrix& m2)
 {
   if (m1.mRow == m2.mRow && m1.mCol == m2.mCol)
   {
-    for (int i = 0; i = m1.mRow; i++)
+    for (int i = 0; i < m1.mSize; i++)
     {
-      for (int j = 0; j = m1.mCol; j++){
-        std::cout << m1.getValue(i,j) << "=" << m2.getValue(i,j) <<std::endl;
-        if (m1.getValue(i,j) != m2.getValue(i,j))
-        {
-          return false;
-        }
+      if (m1.mData[i] != m2.mData[i])
+      {
+        return false;
       }
     }
     return true;
@@ -598,11 +595,9 @@ bool operator==(const Matrix m1, const Matrix m2)
 
 bool operator!=(const Matrix& m1, const Matrix& m2)
 {
-  //return !(m1 == m2);
-  return true;
+  return !(m1 == m2);
 }
-
-
+//////////////////////////////////////////////////////////////////////////////////
 
 ///////////// =#=#=#=#=#=#=#=#=#  Linear Solvers #=#=#=##=#=#=#=# ////////////////
 //////////////////////////////////////////////////////////////////////////////////

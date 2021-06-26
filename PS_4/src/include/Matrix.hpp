@@ -44,7 +44,8 @@ public:
    // Get value
    double& getValue(int row, int col) const;
 
-   
+   Matrix getRow(int row);
+   Matrix getCol(int col);
 
 
    // All "friend" external operators and functions are declared as friend inside the class (here)
@@ -70,7 +71,7 @@ public:
    Matrix& operator=(const Matrix& m);
 
    //equality
-   friend bool operator==(const Matrix m1, const Matrix m2);
+   friend bool operator==(const Matrix& m1, const Matrix& m2);
    //inequality
    friend bool operator!=(const Matrix& m1, const Matrix& m2);
    //indexing
@@ -132,7 +133,7 @@ Matrix operator/(const Matrix& m1, const Matrix& m2);
 Matrix operator-(const Matrix& m);
 
 // equality
-bool operator==(const Matrix m1, const Matrix m2);
+bool operator==(const Matrix& m1, const Matrix& m2);
 
 //print
 void print(const Matrix& m);
