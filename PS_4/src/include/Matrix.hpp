@@ -40,9 +40,10 @@ public:
    ~Matrix();
    
    // Set value
-   void setValue(double value, int row, int col); 
+   void setValue(double value, int row, int col) const; 
    // Get value
    double& getValue(int row, int col) const;
+
    
 
 
@@ -55,6 +56,11 @@ public:
    friend Matrix operator*(const Matrix& m, const double& a);
    friend Matrix operator*(const double& a, const Matrix& m);
    friend Matrix operator/(const Matrix& m, const double& a);
+
+   // Gaussian elimination solver
+   friend Matrix gaussianElimination(const Matrix A, const Matrix b);
+   friend Matrix operator/(const Matrix b, const Matrix A);
+
    // Unary operator
    friend Matrix operator-(const Matrix& m);
 
@@ -62,12 +68,33 @@ public:
 
    //assignment
    Matrix& operator=(const Matrix& m);
+
+   //equality
+   friend bool operator==(const Matrix m1, const Matrix m2);
+   //inequality
+   friend bool operator!=(const Matrix& m1, const Matrix& m2);
    //indexing
    double& operator() (int i, int j);
    //transposing
    Matrix T() const;
    friend Matrix transpose(const Matrix& m);
 
+   // Max
+   double rowMax(int row, int col = 0, bool abs_true = true) const;
+   double colMax(int col, int row = 0, bool abs_true = true) const;
+   int argRowMax(int row, int col = 0, bool abs_true = true) const;
+   int argColMax(int col, int row = 0, bool abs_true = true) const;
+
+   // Row and Column swapping
+   void swapRow(int row1, int row2) const;
+   void swapCol(int col1, int col2) const;
+   
+   //eye
+   friend const Matrix eye(int row, int col);
+   friend const Matrix eye(int n);
+   //random matrix
+   friend const Matrix rand(int row, int col);
+   friend const Matrix rand(int n);
 
    //output
    friend void print(const Matrix& m);
@@ -83,6 +110,8 @@ public:
 
 
 
+
+
 };
 
 
@@ -95,9 +124,15 @@ Matrix operator*(const Matrix& m1, const Matrix& m2);
 Matrix operator*(const Matrix& m, const double& a);
 Matrix operator*(const double& a, const Matrix& m);
 Matrix operator/(const Matrix& m, const double& a);
+
+// Solver
+Matrix gaussianElimination(const Matrix& A, const Matrix& b);
 Matrix operator/(const Matrix& m1, const Matrix& m2);
 // Unary operator
 Matrix operator-(const Matrix& m);
+
+// equality
+bool operator==(const Matrix m1, const Matrix m2);
 
 //print
 void print(const Matrix& m);
@@ -110,7 +145,11 @@ double norm(Matrix& m, int p=2);
 // Prototype signature of length() friend function
 int length(const Matrix& m);
 
+// eye
 const Matrix eye(int row, int col);
 const Matrix eye(int n);
+// random matrix
+const Matrix rand(int row, int col);
+const Matrix rand(int n);
 
 #endif

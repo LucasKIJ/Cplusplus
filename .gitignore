@@ -6,6 +6,9 @@
 # Ignore json
 *.json
 
+#Ignore object file
+*.o
+
 # Ignore vscode
 .vscode
 

@@ -49,7 +49,7 @@ Matrix::~Matrix()
 
 ////// ************ GETTERS AND SETTERS ************ ////// 
 // Set value using 0-indexing
-void Matrix::setValue(double value, int row, int col)
+void Matrix::setValue(double value, int row, int col) const
 {
   if (row < 0 || row >= mRow || col < 0 || col >= mCol)
   {
@@ -100,6 +100,22 @@ const Matrix eye(int n)
 //////////////////////////////////////////////////////////
 
 
+////////////// ******** Random Matrix ********* //////////
+const Matrix rand(int row, int col)
+{
+  Matrix R(row,col);
+  for (int i=0; i < R.mSize; i++)
+  {
+     R.mData[i] = rand();
+  }
+  return R;
+}
+
+const Matrix rand(int n)
+{
+  return rand(n,n);
+}
+//////////////////////////////////////////////////////////
 
 
 //////// ******** Arithmatic operators ******** //////////
@@ -280,6 +296,7 @@ void print(const Matrix& m)
     }
   std::cout << " ]" << std::endl;
     }
+  std::cout << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& output, const Matrix& m) 
@@ -444,7 +461,7 @@ double Matrix::norm(std::string p) const
 /////////////////////////////////////////////////////////////////////////////////////
 
 
-
+/////////////////// ********** Matrix Size ************ //////////////////////////
 // return size of a Matrix
 int* size(const Matrix& m)
 {
@@ -454,4 +471,216 @@ int* size(const Matrix& m)
   dims[1] = m.mCol;
   return dims;
 }
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////////// ********** Max functions *********** //////////////////////////
+double Matrix::rowMax(int row, int col, bool abs_true) const
+{
+  int arg_max = 0;
+  double max_val = 0;
+  double temp;
+  for (int j = col; j < mCol; j++)
+  {
+    if (abs_true)
+    {
+      temp = fabs(getValue(row,j));
+    }
+    else
+    {
+      temp = getValue(row,j);
+    }
+    if (max_val < temp)
+    {
+      max_val = temp;
+      arg_max = j;
+    }
+  }
+  return max_val;
+}
+
+
+double Matrix::colMax(int col, int row, bool abs_true) const
+{
+  int arg_max = 0;
+  double max_val = 0;
+  double temp;
+  for (int i = row; i < mRow; i++)
+  {
+    if (abs_true)
+    {
+      temp = fabs(getValue(i,col));
+    }
+    else
+    {
+      temp = getValue(i,col);
+    }
+    if (max_val < temp)
+    {
+      max_val = temp;
+      arg_max = i;
+    }
+  }
+  return max_val;
+}
+
+int Matrix::argRowMax(int row, int col, bool abs_true) const
+{
+    int arg_max = 0;
+  double max_val = 0;
+  double temp;
+  for (int j = col; j < mCol; j++)
+  {
+    if (abs_true)
+    {
+      temp = fabs(getValue(row,j));
+    }
+    else
+    {
+      temp = getValue(row,j);
+    }
+    if (max_val < temp)
+    {
+      max_val = temp;
+      arg_max = j;
+    }
+  }
+  return arg_max;
+}
+
+int Matrix::argColMax(int col, int row, bool abs_true) const
+{
+  int arg_max = 0;
+  double max_val = 0;
+  double temp;
+  for (int i = row; i < mRow; i++)
+  {
+    if (abs_true)
+    {
+      temp = fabs(getValue(i,col));
+    }
+    else
+    {
+      temp = getValue(i,col);
+    }
+    if (max_val < temp)
+    {
+      max_val = temp;
+      arg_max = i;
+    }
+  }
+  return arg_max;
+}
+//////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////// ********** Boolean Operators *********** /////////////////////
+bool operator==(const Matrix m1, const Matrix m2)
+{
+  if (m1.mRow == m2.mRow && m1.mCol == m2.mCol)
+  {
+    for (int i = 0; i = m1.mRow; i++)
+    {
+      for (int j = 0; j = m1.mCol; j++){
+        std::cout << m1.getValue(i,j) << "=" << m2.getValue(i,j) <<std::endl;
+        if (m1.getValue(i,j) != m2.getValue(i,j))
+        {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+bool operator!=(const Matrix& m1, const Matrix& m2)
+{
+  //return !(m1 == m2);
+  return true;
+}
+
+
+
+///////////// =#=#=#=#=#=#=#=#=#  Linear Solvers #=#=#=##=#=#=#=# ////////////////
+//////////////////////////////////////////////////////////////////////////////////
+void Matrix::swapRow(int row1, int row2) const
+{
+  double temp;
+  for (int j = 0; j < mCol; j++){
+    temp = getValue(row1,j);
+    setValue(getValue(row2,j),row1,j);
+    setValue(temp,row2,j);
+  }
+}
+
+void Matrix::swapCol(int col1, int col2) const
+{
+  double temp;
+  for (int i = 0; i < mRow; i++){
+    temp = getValue(i,col1);
+    setValue(getValue(i,col2),i,col1);
+    setValue(temp,i,col2);
+  }
+}
+
+
+
+///////////// ********* Gaussian Elimination ************ ////////////////////////
+Matrix gaussianElimination(const Matrix A, const Matrix b)
+{
+  double M;
+  // Perform elimination
+  for (int k = 0; k < A.mRow; k++)
+  {      
+      // Get pivot position
+      int i_max = A.argColMax(k,k);
+      // No pivot in this column.
+      if (A.getValue(i_max,k) == 0)
+      {
+          continue;
+      }
+
+      // If pivot exists and not equal to current column
+      if (i_max != k)
+      {
+          A.swapRow(k, i_max);  
+          // Swap vector entries
+          b.swapRow(k, i_max);
+      }
+
+
+
+      for (int i = k+1; i < A.mRow; i++)
+      {
+          M = A.getValue(i,k) / A.getValue(k,k);
+          for (int j = k; j < A.mRow; j++)
+          {    
+              A.setValue(A.getValue(i,j) - M * A.getValue(k,j), i, j);
+          }
+          for (int j = 0; b.mRow; j++)
+          {
+            b.setValue(b.getValue(i,j)- M * b.getValue(k,j), i, j);
+          }
+      }
+    }
+
+  // Declare x
+  Matrix x(A.mRow,b.mCol);
+  double sum;
+  for (int j = 1; j < x.mCol; j++)
+  {
+    for (int k = A.mCol - 1; k >= 0; k--){
+      sum = 0;
+      for (int i = k; i < A.mCol; i++){
+          sum += A.getValue(k,j) * x.getValue(i,j);
+      }
+      x.setValue((1. / A.getValue(k,k)) * (b.getValue(k,j) - sum), k, j);
+    }
+  }
+  return x;
+}
+
 

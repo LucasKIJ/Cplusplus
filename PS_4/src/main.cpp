@@ -4,21 +4,15 @@
 #include "Exception.hpp"
 #include "Vector.hpp"
 #include "Matrix.hpp"
+#include "MatrixTests.hpp"
 
 
 int main(int argc, char* argv[])
 {
   //This would  produce a compiler warning (there is no default constructor)
   
-
+  MatrixTests::RunTests();
   
-  try
-  {
-  }
-  catch (Exception &ex)
-  {
-      ex.DebugPrint();
-  }
 /*
   Matrix A_matrix = Matrix(3,3);
   
