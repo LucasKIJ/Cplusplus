@@ -10,13 +10,14 @@
 int main(int argc, char* argv[])
 {
   //This would  produce a compiler warning (there is no default constructor)
-  
-  MatrixTests::RunTests();
-
-  Matrix A = rand(3,3);
-  print(A);
-  print(transpose(A));
-  print(A);
+  try
+  {  
+    MatrixTests::RunTests();
+  }
+  catch (Exception &ex)
+  {
+    ex.DebugPrint();
+  }
   
 /*
   Matrix A_matrix = Matrix(3,3);

@@ -5,10 +5,21 @@ namespace MatrixTests
 {
     void RunTests();
     void Equality();
-    void Inequality();
     void Add();
-    void AddCommutative();
     void Minus();
-    void Multiply();
+    void MultiplySquare();
+    void MultiplyRect();
+    void MultiplyConst();
+    void UnaryMinus();
+    void Transpose();
+    void RowMax();
+    void ColMax();
+    void SwapRow();
+    void SwapCol();
+    void Eye();
+    
+    void NormAll();
+    void Size();
+    void GaussianElimination();
 }
 #endif

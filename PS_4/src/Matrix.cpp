@@ -476,9 +476,9 @@ int* size(const Matrix& m)
 ////////////////// ********** Max functions *********** //////////////////////////
 double Matrix::rowMax(int row, int col, bool abs_true) const
 {
-  int arg_max = 0;
-  double max_val = 0;
+  double max_val ;
   double temp;
+  max_val = getValue(row,col);
   for (int j = col; j < mCol; j++)
   {
     if (abs_true)
@@ -492,7 +492,6 @@ double Matrix::rowMax(int row, int col, bool abs_true) const
     if (max_val < temp)
     {
       max_val = temp;
-      arg_max = j;
     }
   }
   return max_val;
@@ -501,9 +500,10 @@ double Matrix::rowMax(int row, int col, bool abs_true) const
 
 double Matrix::colMax(int col, int row, bool abs_true) const
 {
-  int arg_max = 0;
-  double max_val = 0;
+  double max_val;
   double temp;
+
+  max_val = getValue(row,col);
   for (int i = row; i < mRow; i++)
   {
     if (abs_true)
@@ -517,7 +517,6 @@ double Matrix::colMax(int col, int row, bool abs_true) const
     if (max_val < temp)
     {
       max_val = temp;
-      arg_max = i;
     }
   }
   return max_val;
@@ -525,9 +524,11 @@ double Matrix::colMax(int col, int row, bool abs_true) const
 
 int Matrix::argRowMax(int row, int col, bool abs_true) const
 {
-    int arg_max = 0;
-  double max_val = 0;
+  int arg_max = col;
+  double max_val ;
   double temp;
+
+  max_val = getValue(row,col);
   for (int j = col; j < mCol; j++)
   {
     if (abs_true)
@@ -549,9 +550,10 @@ int Matrix::argRowMax(int row, int col, bool abs_true) const
 
 int Matrix::argColMax(int col, int row, bool abs_true) const
 {
-  int arg_max = 0;
-  double max_val = 0;
+  int arg_max = row;
+  double max_val;
   double temp;
+  max_val = getValue(row,col);
   for (int i = row; i < mRow; i++)
   {
     if (abs_true)
@@ -623,6 +625,7 @@ void Matrix::swapCol(int col1, int col2) const
 
 
 
+
 ///////////// ********* Gaussian Elimination ************ ////////////////////////
 Matrix gaussianElimination(const Matrix A, const Matrix b)
 {
@@ -635,15 +638,15 @@ Matrix gaussianElimination(const Matrix A, const Matrix b)
       // No pivot in this column.
       if (A.getValue(i_max,k) == 0)
       {
-          continue;
+        continue;
       }
 
       // If pivot exists and not equal to current column
       if (i_max != k)
       {
-          A.swapRow(k, i_max);  
-          // Swap vector entries
-          b.swapRow(k, i_max);
+        A.swapRow(k, i_max);  
+        // Swap vector entries
+        b.swapRow(k, i_max);
       }
 
 
@@ -653,7 +656,7 @@ Matrix gaussianElimination(const Matrix A, const Matrix b)
           M = A.getValue(i,k) / A.getValue(k,k);
           for (int j = k; j < A.mRow; j++)
           {    
-              A.setValue(A.getValue(i,j) - M * A.getValue(k,j), i, j);
+            A.setValue(A.getValue(i,j) - M * A.getValue(k,j), i, j);
           }
           for (int j = 0; b.mRow; j++)
           {
@@ -667,10 +670,12 @@ Matrix gaussianElimination(const Matrix A, const Matrix b)
   double sum;
   for (int j = 1; j < x.mCol; j++)
   {
-    for (int k = A.mCol - 1; k >= 0; k--){
+    for (int k = A.mCol - 1; k >= 0; k--)
+    {
       sum = 0;
-      for (int i = k; i < A.mCol; i++){
-          sum += A.getValue(k,j) * x.getValue(i,j);
+      for (int i = k; i < A.mCol; i++)
+      {
+        sum += A.getValue(k,j) * x.getValue(i,j);
       }
       x.setValue((1. / A.getValue(k,k)) * (b.getValue(k,j) - sum), k, j);
     }
