@@ -601,8 +601,16 @@ bool operator!=(const Matrix& m1, const Matrix& m2)
 }
 //////////////////////////////////////////////////////////////////////////////////
 
-///////////// =#=#=#=#=#=#=#=#=#  Linear Solvers #=#=#=##=#=#=#=# ////////////////
-//////////////////////////////////////////////////////////////////////////////////
+////////////////// *************** Swap elements ************* ////////////////////
+void Matrix::swap(int row1, int col1, int row2, int col2) const
+{
+  double temp;
+  temp = getValue(row1,col1);
+  setValue(getValue(row2,col2),row1,col1);
+  setValue(temp,row2,col2);
+}
+
+
 void Matrix::swapRow(int row1, int row2) const
 {
   double temp;
@@ -623,6 +631,58 @@ void Matrix::swapCol(int col1, int col2) const
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////////
+
+///////////// =#=#=#=#=#=#=#=#=#  Linear Solvers #=#=#=##=#=#=#=# ////////////////
+//////////////////////////////////////////////////////////////////////////////////
+
+////////////// *********** LU Decomposition ************* ///////////////////////
+
+std::tuple <Matrix, Matrix, Matrix> LU(const Matrix& A)
+{
+  int m = A.mCol;
+  int n = A.mRow;
+  Matrix U(A);
+  Matrix L = eye(n);
+  Matrix P = eye(n);
+
+  int i;
+  double temp;
+
+  for (int k = 0; k < m - 1; k++)
+  {
+    i = U.argColMax(k,k);
+
+    for (int j = k; j < m; j++)
+    {
+      U.swap(k,j,i,j);
+    }
+
+    for (int j = 0; j < k - 1; j++)
+    {
+      L.swap(k,j,  i,j);
+    }
+
+    P.swapRow(k,i);
+
+    for (int i = k + 1; i < m; i++)
+    {
+      temp = U.getValue(i,k) / U.getValue(k,k);
+      L.setValue(temp, i,k);
+      for (int j = k; j < m; j++)
+      {
+        temp = U.getValue(i,j) - L.getValue(i,k) * U.getValue(k,j);
+        U.setValue(temp, i,j);
+      }
+    }
+  }
+
+  return {P, L, U};
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
 
 
 

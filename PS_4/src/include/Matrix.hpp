@@ -15,6 +15,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <tuple>
 #include "Exception.hpp"//  This class throws errors using the class "error"
 
 class Matrix
@@ -62,6 +63,9 @@ public:
    friend Matrix gaussianElimination(const Matrix A, const Matrix b);
    friend Matrix operator/(const Matrix b, const Matrix A);
 
+   // LU Decomposition
+   friend std::tuple<Matrix, Matrix, Matrix> LU(const Matrix& A);
+
    // Unary operator
    friend Matrix operator-(const Matrix& m);
 
@@ -89,6 +93,10 @@ public:
    // Row and Column swapping
    void swapRow(int row1, int row2) const;
    void swapCol(int col1, int col2) const;
+
+   // swapping
+   void swap(int row1, int col1, int row2, int col2) const;
+
    
    //eye
    friend const Matrix eye(int row, int col);
@@ -129,6 +137,11 @@ Matrix operator/(const Matrix& m, const double& a);
 // Solver
 Matrix gaussianElimination(const Matrix& A, const Matrix& b);
 Matrix operator/(const Matrix& m1, const Matrix& m2);
+
+// LU Decomposition
+std::tuple<Matrix, Matrix, Matrix> LU(const Matrix& A);
+
+
 // Unary operator
 Matrix operator-(const Matrix& m);
 

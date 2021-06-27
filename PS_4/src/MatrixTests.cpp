@@ -1,4 +1,5 @@
 #include "MatrixTests.hpp"
+#include <tuple>
 namespace MatrixTests
 {
 void RunTests()
@@ -15,7 +16,10 @@ void RunTests()
   ColMax();
   SwapRow();
   SwapCol();
+  Swap();
   Eye();
+  LUTest();
+
 }
 
 void Equality()
@@ -397,6 +401,82 @@ void Eye()
     std::cout << "Test - " << __func__ << ", Result: Failed." << std::endl;
   }
 }
+
+void Swap()
+{
+  Matrix A(2,2);
+  Matrix B(2,2);
+  double temp = 0;
+  for (int i = 0; i < 2; i++)
+  {
+    for (int j = 0; j < 2; j++)
+    {
+      temp += 1;
+      A.setValue(temp, i,j);
+    }
+  }
+  A.swap(0,0,0,1);
+  B(1,1) = 2; B(1,2) = 1;
+  B(2,1) = 3; B(2,2) = 4;
+
+  if (A == B)
+  {
+    std::cout << "Test - " << __func__ << ", Result: Passed." << std::endl;
+  }
+  else
+  {
+    std::cout << "Test - " << __func__ << ", Result: Failed." << std::endl;
+  }
+}
+
+void LUTest()
+{
+  Matrix A(3,3);
+  Matrix P_true(3,3);
+  Matrix L_true(3,3);
+  Matrix U_true(3,4);
+  double elementsA [9] = {4,3,-5,3,-1,1,1,-3,-5};
+  double elementsU [9] = {4,3,-5,0,-3.75,-3.75,0,0,8};
+  double elementsP [9]  = {1,0,0,0,0,1,0,1,0};
+  double elementsL [9]  = {1,0,0,0.25,1,0,0.75,13./15.,1};
+  int count = 0;
+  for (int i = 1; i <= 3; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      A(i,j) = elementsA[count];
+      U_true(i,j) = elementsU[count];
+      count += 1;
+    }
+  }
+  count = 0;
+  for (int i = 1; i <= 3; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      P_true(i,j) = elementsP[count];
+      L_true(i,j) = elementsL[count];
+      count += 1;
+    }
+  }
+
+  Matrix P(3,3);
+  Matrix U(3,3);
+  Matrix L(3,4);
+  std::tie(P, L, U) = LU(A);
+  if (P==P_true && L==L_true && U==U_true)
+  {
+    std::cout << "Test - " << __func__ << ", Result: Passed." << std::endl;
+  }
+  else
+  {
+    std::cout << "Test - " << __func__ << ", Result: Failed." << std::endl;
+  }
+
+}
+
+
+
 
 }
 
