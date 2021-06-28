@@ -1,4 +1,5 @@
 #include "Matrix.hpp"
+#include "Vector.hpp"
 //#include "Vector.hpp"
 
 
@@ -69,6 +70,18 @@ double& Matrix::getValue(int row, int col) const
   }
   return mData[mCol * row + col];
 }
+
+int Matrix::getNumRow() const
+{
+  return mRow;
+}
+
+int Matrix::getNumCol() const
+{
+  return mCol;
+}
+
+
 ///////////////////////////////////////////////////////////
 
 //////// ************ Identity matrix ************ //////// 
@@ -138,6 +151,36 @@ Matrix operator+(const Matrix& m1,
   {
     throw Exception("Different dimensions", "Matrix add - Matrices are different dimensions\n");
   }
+}
+
+Matrix operator+(const Matrix& m, 
+                        const double& a)
+{
+  //  add double to matrix
+  //  if one Matrix is shorter than the other assume missing entries are 0
+  Matrix ma(m);
+  for (int i=0; i<m.mSize; i++)
+  {
+    ma.mData[i] = m.mData[i] + a;
+  }
+  return ma;
+}
+
+Matrix operator+(const double& a, const Matrix& m)
+{
+  return m+a;
+}
+
+
+Matrix operator-(const Matrix& m, 
+                        const double& a)
+{
+  return m + (-a);
+}
+
+Matrix operator-(const double& a, const Matrix& m)
+{
+  return (-m)+a;
 }
 
 
@@ -638,10 +681,18 @@ void Matrix::swapCol(int col1, int col2) const
 
 ////////////// *********** LU Decomposition ************* ///////////////////////
 
-std::tuple <Matrix, Matrix, Matrix> LU(const Matrix& A)
+std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A)
 {
+
   int m = A.mCol;
   int n = A.mRow;
+
+  if (m != n)
+  {
+    throw Exception("LU - Non-square matrix input", "LU decomposition is\
+    designed to receive only square matrices as an input.");
+  }
+
   Matrix U(A);
   Matrix L = eye(n);
   Matrix P = eye(n);
@@ -679,10 +730,79 @@ std::tuple <Matrix, Matrix, Matrix> LU(const Matrix& A)
 
   return {P, L, U};
 }
-
-
-
 /////////////////////////////////////////////////////////////////////////////////
+
+/////////////// ************ Determinant ************* /////////////////////////
+double Matrix::det() const
+{
+  if (mRow != mCol)
+  {
+    throw Exception("Matrix::det() - Non-square matrix","Matrix entered is non-square.\
+                      Square matrix required to find determinant.");
+  }
+  Matrix P(mRow,mCol); Matrix L(mRow,mCol); Matrix U(mRow,mCol);
+  std::tie(P,L,U) = lu(*this);
+  double prod = 1;
+  for (int i = 0; i < mRow; i++)
+  {
+    prod *= L.getValue(i,i) * U.getValue(i,i);
+  }
+  return prod;
+
+}
+
+double det(const Matrix& A)
+{
+  return A.det();
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////// ********** QR ************ ///////////////////////////
+std::tuple <Matrix, Matrix> qr(const Matrix& A)
+{
+  int m = A.mRow;     int n = A.mCol;
+  Matrix R(A);
+  Matrix Q = eye(m);
+  Vector x(m);
+  Vector w(m);
+  Vector u(m);
+  
+  double g;
+  double s;
+
+  for (int k=0; k < m-1; k++)
+  {
+
+    for (int i = 0; i < k; i++)
+    {
+      x.setValue(0,   i);
+    }
+
+    for (int i = k; i < m; i++)
+    {
+      x.setValue(R.getValue(i,k),   i);
+    }
+    
+    g = (double) ((x.getValue(k) > 0) - (x.getValue(k) < 0)) * norm(x);
+
+    x.setValue(x.getValue(k) + g, k);
+
+    s = norm(x);
+    if (s != 0)
+    {
+      w = (x / s);
+      u = 2* (R.T() * w);
+      R = R - (w * u.T());
+      Q = Q - 2 * Q * (w * w.T());
+    }
+  } 
+
+  return {Q,R};
+}
+
+
+
 
 
 

@@ -18,8 +18,9 @@ namespace MatrixTests
     void SwapCol();
     void Eye();
     void Swap();
-    void LUTest();
-
+    void LU();
+    void Det();
+    void QR();
     
     void NormAll();
     void Size();

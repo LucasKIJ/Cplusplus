@@ -18,8 +18,9 @@ void RunTests()
   SwapCol();
   Swap();
   Eye();
-  LUTest();
-
+  LU();
+  Det();
+  QR();
 }
 
 void Equality()
@@ -429,7 +430,7 @@ void Swap()
   }
 }
 
-void LUTest()
+void LU()
 {
   Matrix A(3,3);
   Matrix P_true(3,3);
@@ -455,7 +456,7 @@ void LUTest()
   Matrix P(3,3);
   Matrix U(3,3);
   Matrix L(3,3);
-  std::tie(P, L, U) = LU(A);
+  std::tie(P, L, U) = lu(A);
   
   if (P==P_true && L==L_true && U==U_true)
   {
@@ -467,6 +468,62 @@ void LUTest()
   }
 
 }
+
+void Det()
+{
+  Matrix A(3,3);
+  int count = 0;
+  double elements [9] = {1,4,3,2,1,5,3,2,1};
+  for (int i = 1; i <= 3; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+
+  double det_true = 46;
+  double det = A.det();
+
+  if (det_true == det)
+  {
+    std::cout << "Test - " << __func__ << ", Result: Passed." << std::endl;
+  }
+  else
+  {
+    std::cout << "Test - " << __func__ << ", Result: Failed." << std::endl;
+  }
+}
+
+/*
+void QR()
+{
+  std::cout << "QR" <<std::endl;
+  Matrix A(3,3);
+  int count = 0;
+  double elements [9] = {1,4,3,2,1,5,3,2,1};
+  for (int i = 1; i <= 3; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+
+  Matrix Q(3,3);
+  Matrix R(3,3);
+  std::tie(Q,R) = qr(A);
+  double detR = 1;
+
+  std::cout << Q.T() * Q << std::endl;
+  std::cout << det(R) << " = " << detR << std::endl;
+  std::cout << Q*R << std::endl;
+
+}
+*/
+
 }
 
 

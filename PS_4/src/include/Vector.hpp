@@ -29,6 +29,16 @@ public:
    // destructor
    ~Vector();
 
+   // Set value
+   void setValue(double value, int row) const; 
+   // Get value
+   double& getValue(int row) const;
+
+   //assignment
+   Vector& operator=(const Vector& m);
+   Vector& operator=(const Matrix& m);
+
+
    //indexing
    double& operator()(int i);
    

@@ -45,26 +45,40 @@ public:
    // Get value
    double& getValue(int row, int col) const;
 
-   Matrix getRow(int row);
-   Matrix getCol(int col);
+   // Get number of rows
+   int getNumRow() const;
+   int getNumCol() const;
+   
 
 
    // All "friend" external operators and functions are declared as friend inside the class (here)
    // but their actual prototype definitions occur outside the class.
    // Binary operators
    friend Matrix operator+(const Matrix& m1, const Matrix& m2);
+   friend Matrix operator+(const Matrix& m,  const double& a);
+   friend Matrix operator+(const double& a,  const Matrix& m);
    friend Matrix operator-(const Matrix& m1, const Matrix& m2);
+   friend Matrix operator-(const Matrix& m,  const double& a);
+   friend Matrix operator-(const double& a,  const Matrix& m);
    friend Matrix operator*(const Matrix& m1, const Matrix& m2);
-   friend Matrix operator*(const Matrix& m, const double& a);
-   friend Matrix operator*(const double& a, const Matrix& m);
-   friend Matrix operator/(const Matrix& m, const double& a);
+   friend Matrix operator*(const Matrix& m,  const double& a);
+   friend Matrix operator*(const double& a,  const Matrix& m);
+   friend Matrix operator/(const Matrix& m,  const double& a);
 
    // Gaussian elimination solver
    friend Matrix gaussianElimination(const Matrix A, const Matrix b);
    friend Matrix operator/(const Matrix b, const Matrix A);
 
    // LU Decomposition
-   friend std::tuple<Matrix, Matrix, Matrix> LU(const Matrix& A);
+   friend std::tuple<Matrix, Matrix, Matrix> lu(const Matrix& A);
+
+   // Determinant
+   double det() const;
+   friend double det(const Matrix& A);
+
+   // QR factorisation
+   friend std::tuple <Matrix, Matrix> qr(const Matrix& A);
+
 
    // Unary operator
    friend Matrix operator-(const Matrix& m);
@@ -128,7 +142,11 @@ public:
 // but their actual prototype definitions occur outside the class (here).
 // Binary operators
 Matrix operator+(const Matrix& m1, const Matrix& m2);
+Matrix operator+(const Matrix& m,  const double& a);
+Matrix operator+(const double& a,  const Matrix& m);
 Matrix operator-(const Matrix& m1, const Matrix& m2);
+Matrix operator-(const Matrix& m,  const double& a);
+Matrix operator-(const double& a,  const Matrix& m);
 Matrix operator*(const Matrix& m1, const Matrix& m2);
 Matrix operator*(const Matrix& m, const double& a);
 Matrix operator*(const double& a, const Matrix& m);
@@ -139,7 +157,12 @@ Matrix gaussianElimination(const Matrix& A, const Matrix& b);
 Matrix operator/(const Matrix& m1, const Matrix& m2);
 
 // LU Decomposition
-std::tuple<Matrix, Matrix, Matrix> LU(const Matrix& A);
+std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A);
+
+// QR
+std::tuple <Matrix, Matrix> qr(const Matrix& A);
+// Det
+double det(const Matrix& A);
 
 
 // Unary operator
