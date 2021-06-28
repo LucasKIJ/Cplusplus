@@ -20,7 +20,7 @@ void RunTests()
   Eye();
   LU();
   Det();
-  QR();
+  HessReduction();
 }
 
 void Equality()
@@ -523,6 +523,24 @@ void QR()
 
 }
 */
+
+void HessReduction()
+{
+  Matrix A(3,3);
+  int count = 0;
+  double elements [9] = {1,4,3,2,1,5,3,2,1};
+  for (int i = 1; i <= 3; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+
+  std::cout <<  hessenbergReduction(A) << std::endl;
+
+}
 
 }
 

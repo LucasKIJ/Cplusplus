@@ -27,6 +27,8 @@ protected:
    const int mCol;      // number of columns
    const int mSize;     // number of elements
 
+   
+
 public:
    // constructors
    // No default constructor
@@ -78,7 +80,9 @@ public:
 
    // QR factorisation
    friend std::tuple <Matrix, Matrix> qr(const Matrix& A);
-
+   // QR Algorithm
+   friend Matrix hessenbergReduction(const Matrix& A);
+   friend std::tuple <Matrix , Matrix> eigenSystem(const Matrix& A, double tol = 1e-10);
 
    // Unary operator
    friend Matrix operator-(const Matrix& m);
@@ -161,6 +165,10 @@ std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A);
 
 // QR
 std::tuple <Matrix, Matrix> qr(const Matrix& A);
+// QR Algorithm
+Matrix hessenbergReduction(const Matrix& A);
+std::tuple <Matrix, Matrix> eigenSystem(const Matrix& A, double tol = 1e-10);
+
 // Det
 double det(const Matrix& A);
 

@@ -21,6 +21,7 @@ namespace MatrixTests
     void LU();
     void Det();
     void QR();
+    void HessReduction();
     
     void NormAll();
     void Size();
