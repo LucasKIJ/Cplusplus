@@ -7,6 +7,11 @@
 // double precision entries all initially set to zero
 Matrix::Matrix(int row, int col) : mRow(row), mCol(col), mSize(row * col)
 {
+  if (mCol < 1 || mRow < 1)
+  {
+    throw Exception("Matrix::Matrix - Invalid dimensions", "Please ender dimension greater or equal"
+                      "to one.");
+  }
   mData=new double[mSize];
   for (int i=0; i< mSize; i++)
   {
@@ -17,6 +22,11 @@ Matrix::Matrix(int row, int col) : mRow(row), mCol(col), mSize(row * col)
 
 Matrix::Matrix(int n) : mRow(n), mCol(n), mSize(n * n)
 {
+  if (n < 1)
+  {
+    throw Exception("Matrix::Matrix - Invalid dimensions", "Please ender dimension greater or equal"
+                      "to one.");
+  }
   mData=new double[mSize];
   for (int i=0; i< mSize; i++)
   {
@@ -54,8 +64,8 @@ void Matrix::setValue(double value, int row, int col) const
 {
   if (row < 0 || row >= mRow || col < 0 || col >= mCol)
   {
-    throw Exception("Matrix::setValue - Out of range", "The element coordinates given when\
-                      setting an element value are out of range (use 0-indexing).");
+    throw Exception("Matrix::setValue - Out of range", "The element coordinates given when"
+                      "setting an element value are out of range (use 0-indexing).");
   }
   mData[mCol * row + col] = value;
 }
@@ -65,8 +75,8 @@ double& Matrix::getValue(int row, int col) const
 {
   if (row < 0 || row >= mRow || col < 0 || col >= mCol)
   {
-    throw Exception("Matrix::getValue - Out of range", "The element coordinates given when\
-                      getting an element value are out of range (use 0-indexing).");
+    throw Exception("Matrix::getValue - Out of range", "The element coordinates given when"
+                      "getting an element value are out of range (use 0-indexing).");
   }
   return mData[mCol * row + col];
 }
@@ -235,8 +245,8 @@ Matrix operator*(const Matrix& m1, const Matrix& m2)
     }
   else
     {
-      throw Exception("Different dimensions", "Matrix product - Number of columns in the first matrix\
-                        does not equal number of rows in the second matrix\n");
+      throw Exception("Different dimensions", "Matrix product - Number of columns in the first matrix"
+                        " does not equal number of rows in the second matrix\n");
     }
 }
 
@@ -278,8 +288,8 @@ Matrix operator/(const Matrix& m, const double& a)
 {
   if (a == 0.0)
   {
-     throw Exception("Division by 0", "Attempt to divide by zero in the\
-                       Matrix-scalar division operator");
+     throw Exception("Division by 0", "Attempt to divide by zero in the"
+                       " Matrix-scalar division operator");
   }
 //  create a Matrix of the same length as v with entries equal to v/a
 
@@ -318,8 +328,8 @@ double& Matrix::operator() (int i, int j)
 {
   if (i <= 0 || i > mRow || j <= 0 || j > mCol)
   {
-    throw Exception("(i,j) - Out of range", "The element coordinates given when\
-                      getting an element value are out of range (use 1-indexing).");
+    throw Exception("(i,j) - Out of range", "The element coordinates given when"
+                      " getting an element value are out of range (use 1-indexing).");
   }
   return mData[mCol * (i-1) + (j-1)];
 }
@@ -369,8 +379,8 @@ Matrix& Matrix::operator=(const Matrix& m)
   
   if (mRow != m.mRow && mCol != m.mCol)
     {
-      throw Exception("Dimension mismatch", "Matrix assignment operator - Matrices\
-                          have different dimensions");
+      throw Exception("Dimension mismatch", "Matrix assignment operator - Matrices"
+                          " have different dimensions");
     }
   else
   {
@@ -438,7 +448,9 @@ double Matrix::norm(int p) const
         }
       return pow(norm_val, 1.0/((double) (p)));
     }
-    throw Exception("2-norm for matrices not implemented","");
+    Matrix eigVals = eigenVal(*this);
+    double max_eig = eigVals.colMax(0);
+    return pow(max_eig,0.5);
   }
   else if (p==1)
   {
@@ -463,9 +475,9 @@ double Matrix::norm(int p) const
   }
   else
   {
-  throw Exception("Matrix::norm - norm selected not available","Choice of norm not available,\
-                       please choose from the 1-norm (p=1), 2-norm (p=2), infinity-norm (p=\"inf\")\
-                       or the Frobenius-norm (p=\"frob\")");
+  throw Exception("Matrix::norm - norm selected not available","Choice of norm not available,"
+                       " please choose from the 1-norm (p=1), 2-norm (p=2), infinity-norm (p=\"inf\")"
+                       " or the Frobenius-norm (p=\"frob\")");
   }
 }
 
@@ -506,9 +518,9 @@ double Matrix::norm(std::string p) const
   }
   else
   {
-  throw Exception("Matrix::norm - norm selected not available","Choice of norm not available,\
-                       please choose from the 1-norm (p=1), 2-norm (p=2), infinity-norm (p=\"inf\")\
-                       or the Frobenius-norm (p=\"frobenius\")");
+  throw Exception("Matrix::norm - norm selected not available","Choice of norm not available,"
+                       " please choose from the 1-norm (p=1), 2-norm (p=2), infinity-norm (p=\"inf\")"
+                       " or the Frobenius-norm (p=\"frobenius\")");
   }
 }
 
@@ -700,8 +712,8 @@ std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A)
 
   if (m != n)
   {
-    throw Exception("LU - Non-square matrix input", "LU decomposition is\
-    designed to receive only square matrices as an input.");
+    throw Exception("LU - Non-square matrix input", "LU decomposition is"
+                    " designed to receive only square matrices as an input.");
   }
 
   Matrix U(A);
@@ -748,8 +760,8 @@ double Matrix::det() const
 {
   if (mRow != mCol)
   {
-    throw Exception("Matrix::det() - Non-square matrix","Matrix entered is non-square.\
-                      Square matrix required to find determinant.");
+    throw Exception("Matrix::det() - Non-square matrix","Matrix entered is non-square."
+                      " Square matrix required to find determinant.");
   }
   Matrix P(mRow,mCol); Matrix L(mRow,mCol); Matrix U(mRow,mCol);
   std::tie(P,L,U) = lu(*this);

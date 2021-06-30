@@ -23,8 +23,8 @@ namespace MatrixTests
     void QR();
     void HessReduction();
     void EigenVal();
-    
     void NormAll();
+    
     void Size();
     void GaussianElimination();
 }

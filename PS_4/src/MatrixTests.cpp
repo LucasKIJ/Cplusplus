@@ -20,8 +20,9 @@ void RunTests()
   Eye();
   LU();
   Det();
-  HessReduction();
-  EigenVal();
+  //HessReduction();
+  //EigenVal();
+  //NormAll();
 }
 
 void Equality()
@@ -571,8 +572,41 @@ void EigenVal()
   vals = eigenVal(A);
   print(vals);
   }
-
 }
+
+void NormAll()
+{
+  int n = 6;
+  Matrix A(n,n);
+  int count = 0;
+  double elements [n*n] = {1,4,3,5,9,8,
+                           4,2,5,6,7,3,
+                           3,5,3,7,5,2,
+                           5,6,7,4,8,3,
+                           9,7,5,8,5,5,
+                           8,3,2,3,5,6};
+  for (int i = 1; i <= n; i++)
+  {
+    for (int j = 1; j <= n; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+  try
+  {
+    {
+      norm(A);
+    }
+  }
+  catch(Exception &e)
+  {
+    e.DebugPrint();
+  }
+  
+  std::cout << norm(A) << std::endl;
+}
+
 
 }
 
