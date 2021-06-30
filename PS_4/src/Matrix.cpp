@@ -829,7 +829,6 @@ Matrix hessenbergReduction(const Matrix& A)
   {
     for (int k=0; k < m-2 ; k++)
     {
-      std::cout << k << std::endl;
       for (int i = 0; i < k+1; i++)
       {
         x.setValue(0,   i);

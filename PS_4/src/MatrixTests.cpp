@@ -21,7 +21,7 @@ void RunTests()
   LU();
   Det();
   HessReduction();
-  //EigenVal();
+  EigenVal();
 }
 
 void Equality()
@@ -549,41 +549,25 @@ void HessReduction()
 void EigenVal()
 { 
   {
-  Matrix A(4,4);
+    int n = 6;
+  Matrix A(n,n);
   int count = 0;
-  double elements [16] = {1,4,3,5,
-                         4,1,5,6,
-                         3,5,1,7,
-                         5,6,7,1};
-  for (int i = 1; i <= 4; i++)
+  double elements [n*n] = {1,4,3,5,9,8,
+                           4,2,5,6,7,3,
+                           3,5,3,7,5,2,
+                           5,6,7,4,8,3,
+                           9,7,5,8,5,5,
+                           8,3,2,3,5,6};
+  for (int i = 1; i <= n; i++)
   {
-    for (int j = 1; j <= 4; j++)
+    for (int j = 1; j <= n; j++)
     {
       A(i,j) = elements[count];
       count += 1;
     }
   }
 
-  Matrix vals(4,1);
-  vals = eigenVal(A);
-  print(vals);
-  }
-  {
-  Matrix A(3,3);
-  int count = 0;
-  double elements [9] = {1,4,3,
-                         2,1,5,
-                         3,2,1};
-  for (int i = 1; i <= 3; i++)
-  {
-    for (int j = 1; j <= 3; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
-
-  Matrix vals(3,1);
+  Matrix vals(n,1);
   vals = eigenVal(A);
   print(vals);
   }
