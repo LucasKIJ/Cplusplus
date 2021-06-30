@@ -827,9 +827,9 @@ Matrix hessenbergReduction(const Matrix& A)
   double s;
   if (m > 2)
   {
-    for (int k=0; k < m-2; k++)
+    for (int k=0; k < m-2 ; k++)
     {
-      
+      std::cout << k << std::endl;
       for (int i = 0; i < k+1; i++)
       {
         x.setValue(0,   i);
@@ -837,19 +837,19 @@ Matrix hessenbergReduction(const Matrix& A)
 
       for (int i = k+1; i < m; i++)
       {
-        x.setValue(A.getValue(i,k),   i);
+        x.setValue(H.getValue(i,k),   i);
       }
       
-      g = (double) ((x.getValue(k+1) > 0) - (x.getValue(k+1) < 0)) * norm(x);
+      g = (double) ((x.getValue(k+1) >= 0) - (x.getValue(k+1) < 0)) * norm(x);
 
       x.setValue(x.getValue(k+1) + g, k+1);
 
       s = norm(x);
       if (s != 0)
       {
-        w = (x / s);
-        H = H - 2 * (w * w.T()) * H;
-        H = H - 2 * H * (w * w.T()); 
+        w = (x / (double) s);
+        H = H - 2. * w * (w.T() * H);
+        H = H - 2. * (H * w) * w.T(); 
       }
 
     } 
