@@ -82,7 +82,7 @@ public:
    friend std::tuple <Matrix, Matrix> qr(const Matrix& A);
    // QR Algorithm
    friend Matrix hessenbergReduction(const Matrix& A);
-   friend std::tuple <Matrix , Matrix> eigenSystem(const Matrix& A, double tol = 1e-10);
+   friend Matrix eigenVal(const Matrix& A, double tol = 1.0e-10);
 
    // Unary operator
    friend Matrix operator-(const Matrix& m);
@@ -167,7 +167,7 @@ std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A);
 std::tuple <Matrix, Matrix> qr(const Matrix& A);
 // QR Algorithm
 Matrix hessenbergReduction(const Matrix& A);
-std::tuple <Matrix, Matrix> eigenSystem(const Matrix& A, double tol = 1e-10);
+Matrix eigenVal(const Matrix& A, double tol);
 
 // Det
 double det(const Matrix& A);

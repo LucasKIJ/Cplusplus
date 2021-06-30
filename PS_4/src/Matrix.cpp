@@ -427,7 +427,18 @@ double Matrix::norm(int p) const
 {
   if (p==2)
   {
-    std::cout << "Unfinished" << std::endl;
+    if (mRow==1 || mCol ==1)
+    {
+      double temp, norm_val;
+      norm_val = 0.0;
+      for (int i=0; i < mSize; i++)
+        {
+          temp = fabs(mData[i]);
+          norm_val += pow(temp, p);
+        }
+      return pow(norm_val, 1.0/((double) (p)));
+    }
+    throw Exception("2-norm for matrices not implemented","");
   }
   else if (p==1)
   {
@@ -684,8 +695,8 @@ void Matrix::swapCol(int col1, int col2) const
 std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A)
 {
 
-  int m = A.mCol;
-  int n = A.mRow;
+  int m = A.mRow;
+  int n = A.mCol;
 
   if (m != n)
   {
@@ -761,7 +772,7 @@ double det(const Matrix& A)
 //////////////////////////// ********** QR Factorisation ************ /////////////
 std::tuple <Matrix, Matrix> qr(const Matrix& A)
 {
-  int m = A.mRow;     int n = A.mCol;
+  int m = A.mRow;
   Matrix R(A);
   Matrix Q = eye(m);
   Vector x(m);
@@ -852,7 +863,7 @@ Matrix hessenbergReduction(const Matrix& A)
 //////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////// ********* Eigenvalues by QR Algorithm ************ ///////////////////////
-std::tuple <Matrix , Matrix> eigenSystem(const Matrix& A, double tol)
+Matrix eigenVal(const Matrix& A, double tol)
 {
   if (A.mRow != A.mCol)
   {
@@ -860,52 +871,68 @@ std::tuple <Matrix , Matrix> eigenSystem(const Matrix& A, double tol)
   }
   int m = A.mRow;
   Vector eigVals(m);
-  Matrix eigVecs = eye(m);
-  Matrix Q(m);
-  Matrix R(m);
+  Matrix Hdef(A);
+
   double delta;
   double mu;
 
-  if (m == 1)
-  {
-    eigVals.setValue(A.getValue(0,0),0);
-  }
-  else
-  {
-    Matrix I = eye(m);
-    Matrix H(hessenbergReduction(A));
 
-    while (fabs(H.getValue(m-1,m-2)) > tol)
+    for (int k = m; k > 0; k--)
     {
-      // Wilkinson shift
-      delta = (H.getValue(m-2,m-2) - H.getValue(m-2,m-1)) / 2.;
-      mu = H.getValue(m-2,m-1) - (double) ((delta > 0) - (delta < 0)) * pow(H.getValue(m-1,m-1),2) 
-              / (fabs(delta) + pow(pow(delta,2)+pow(H.getValue(m-1,m-1),2),0.5));
-      
-      std::tie(Q,R) = qr(H - mu*I);
-      H = R*Q + mu*I;
-      eigVecs = eigVecs * Q;
-    }
-    // Deflation
-    Matrix Hdef(m-1);
-    for (int i = 0; i < m-1; i++)
-    {
-      for (int j = 0; j < m-1; j++)
+      if (k == 1)
       {
-        Hdef.setValue(H.getValue(i,j), i,j);
+        eigVals.setValue(Hdef.getValue(0,0),0);
+        continue;
       }
+
+      Matrix I = eye(k);
+      Matrix H(k);
+      Matrix Q(k);
+      Matrix R(k);
+
+      for (int i = 0; i < k; i++)
+      {
+        for (int j = 0; j < k; j++)
+        {
+          H.setValue(Hdef.getValue(i,j), i,j);
+        }
+      }
+      H = hessenbergReduction(H);
+
+      
+      while (fabs(H.getValue(k-1,k-2)) > tol)
+      {
+        // Wilkinson shift
+
+        delta = (H.getValue(k-2,k-2) - H.getValue(k-2,k-1)) / 2.;
+        mu = H.getValue(k-2,k-1) - (double) ((delta > 0) - (delta < 0)) * pow(H.getValue(k-1,k-1),2) 
+                / (fabs(delta) + pow(pow(delta,2)+pow(H.getValue(k-1,k-1),2),0.5));
+        
+        std::tie(Q,R) = qr(H - mu*I);
+        H = R*Q + mu*I;
+      }
+
+      eigVals.setValue(H.getValue(k-1,k-1),k-1);
+
+      // Deflation
+      for (int i = 0; i < k-1; i++)
+      {
+        for (int j = 0; j < k-1; j++)
+        {
+          Hdef.setValue(H.getValue(i,j), i,j);
+        }
+      }
+      
     }
+  
+  return eigVals;
+}
 
-    eigVals.setValue(H.getValue(m-1,m-1),m-1);
-
-
-  }
-
-  return {eigVals, A};
+  
   
 
 
-}
+
 
 
 

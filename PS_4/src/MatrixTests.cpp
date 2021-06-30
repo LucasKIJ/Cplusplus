@@ -21,6 +21,7 @@ void RunTests()
   LU();
   Det();
   HessReduction();
+  EigenVal();
 }
 
 void Equality()
@@ -538,7 +539,51 @@ void HessReduction()
     }
   }
 
-  std::cout <<  hessenbergReduction(A) << std::endl;
+  //std::cout <<  hessenbergReduction(A) << std::endl;
+
+}
+
+void EigenVal()
+{ 
+  {
+  Matrix A(4,4);
+  int count = 0;
+  double elements [16] = {1,4,3,5,
+                         4,1,5,6,
+                         3,5,1,7,
+                         5,6,7,1};
+  for (int i = 1; i <= 4; i++)
+  {
+    for (int j = 1; j <= 4; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+
+  Matrix vals(4,1);
+  vals = eigenVal(A);
+  print(vals);
+  }
+  {
+  Matrix A(3,3);
+  int count = 0;
+  double elements [9] = {1,4,3,
+                         2,1,5,
+                         3,2,1};
+  for (int i = 1; i <= 3; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+
+  Matrix vals(3,1);
+  vals = eigenVal(A);
+  print(vals);
+  }
 
 }
 
