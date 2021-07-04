@@ -20,13 +20,18 @@ void RunTests()
   Eye();
   LU();
   Det();
+  QR();
+  LSQ();
   //HessReduction();
-  //EigenVal();
+  EigenVal();
   //NormAll();
+  //GaussianElimination();
 }
 
 void Equality()
 {
+  // Test matrix equality
+
   Matrix A(3,3);
   Matrix B(3,3);
   double temp = 0;
@@ -52,6 +57,7 @@ void Equality()
 
 void Add()
 {
+  // Test matrix add
   Matrix A(3,3);
   Matrix B(3,3);
   Matrix C(3,3);
@@ -78,6 +84,7 @@ void Add()
 
 void Minus()
 {
+  // Test matrix minus
   Matrix A(3,3);
   Matrix B(3,3);
   Matrix C(3,3);
@@ -104,6 +111,7 @@ void Minus()
 
 void MultiplySquare()
 {
+  // Test matrix multiply with square
   Matrix A(3,3);
   Matrix B(3,3);
   Matrix C(3,3);
@@ -137,6 +145,7 @@ void MultiplySquare()
 
 void MultiplyRect()
 {
+  // Test matrix multiply with rectangular matrices
   Matrix A(3,2);
   Matrix B(2,3);
   Matrix C(3,3);
@@ -174,6 +183,7 @@ void MultiplyRect()
 
 void MultiplyConst()
 {
+  // Test double times matrix
   Matrix A(3,2);
   Matrix B(3,2);
   double temp = 0;
@@ -200,6 +210,7 @@ void MultiplyConst()
 
 void UnaryMinus()
 {
+  // Test unary operator
   Matrix A(3,2);
   Matrix B(3,2);
   double temp = 0;
@@ -225,6 +236,7 @@ void UnaryMinus()
 
 void Transpose()
 {
+  // Test transpose
   Matrix A(3,2);
   Matrix B(2,3);
   double temp = 0;
@@ -258,6 +270,7 @@ void Transpose()
 
 void RowMax()
 {
+  // Test row max
   Matrix A(3,2);
   Matrix B(2,3);
   double temp = 0;
@@ -291,6 +304,7 @@ void RowMax()
 
 void ColMax()
 {
+  // Test col max
   Matrix A(3,2);
   Matrix B(2,3);
   double temp = 0;
@@ -324,6 +338,7 @@ void ColMax()
 
 void SwapRow()
 {
+  // Test swapping rows
   Matrix A(2,2);
   Matrix B(2,2);
   double temp = 0;
@@ -351,6 +366,7 @@ void SwapRow()
 
 void SwapCol()
 {
+  // test swapping columns
   Matrix A(2,2);
   Matrix B(2,2);
   double temp = 0;
@@ -379,6 +395,7 @@ void SwapCol()
 
 void Eye()
 {
+  // Test identity construction
   // Check tall
   Matrix A = eye(3,2);
   Matrix B(3,2);
@@ -407,6 +424,7 @@ void Eye()
 
 void Swap()
 {
+  // test swap function
   Matrix A(2,2);
   Matrix B(2,2);
   double temp = 0;
@@ -434,6 +452,7 @@ void Swap()
 
 void LU()
 {
+  // Test LU decomposition
   Matrix A(3,3);
   Matrix P_true(3,3);
   Matrix L_true(3,3);
@@ -454,11 +473,11 @@ void LU()
       count += 1;
     }
   }
-
+  int sign;
   Matrix P(3,3);
   Matrix U(3,3);
   Matrix L(3,3);
-  std::tie(P, L, U) = lu(A);
+  std::tie(P, L, U,sign) = lu(A);
   
   if (P==P_true && L==L_true && U==U_true)
   {
@@ -473,6 +492,7 @@ void LU()
 
 void Det()
 {
+  // Test det()
   Matrix A(3,3);
   int count = 0;
   double elements [9] = {1,4,3,2,1,5,3,2,1};
@@ -498,14 +518,48 @@ void Det()
   }
 }
 
-/*
+
 void QR()
 {
   std::cout << "QR" <<std::endl;
-  Matrix A(3,3);
+  Matrix A(4,3);
   int count = 0;
-  double elements [9] = {1,4,3,2,1,5,3,2,1};
-  for (int i = 1; i <= 3; i++)
+  double elements [12] = {1,4,3,
+                         4,1,5,
+                         3,5,1,
+                         5,6,7};
+  for (int i = 1; i <= 4; i++)
+  {
+    for (int j = 1; j <= 3; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+  
+
+  Matrix Q(4,3);
+  Matrix R(3,3);
+  std::tie(Q, R) = qr(A, true);
+  std::cout << Q << std::endl;
+  std::cout << R << std::endl;
+ // double detR = 1;
+  //std::cout << Q.T() * Q << std::endl;
+  //std::cout << det(R) << " = " << detR << std::endl;
+  std::cout << Q*R << std::endl;
+
+}
+
+void LSQ()
+{
+  std::cout << "LSQ" <<std::endl;
+  Matrix A(4,3);
+  int count = 0;
+  double elements [12] = {1,4,3,
+                         4,1,5,
+                         3,5,1,
+                         5,6,7};
+  for (int i = 1; i <= 4; i++)
   {
     for (int j = 1; j <= 3; j++)
     {
@@ -514,17 +568,14 @@ void QR()
     }
   }
 
-  Matrix Q(3,3);
-  Matrix R(3,3);
-  std::tie(Q,R) = qr(A);
-  double detR = 1;
-
-  std::cout << Q.T() * Q << std::endl;
-  std::cout << det(R) << " = " << detR << std::endl;
-  std::cout << Q*R << std::endl;
+  Matrix b(4,1);
+  b(1,1) = 1; b(2,1) = 2; b(3,1) = 3; b(4,1) = 4;
+  
+  Matrix x = lsq(A, b);
+  std::cout << x << std::endl;
 
 }
-*/
+
 
 void HessReduction()
 {
@@ -550,15 +601,13 @@ void HessReduction()
 void EigenVal()
 { 
   {
-    int n = 6;
+    int n = 4;
   Matrix A(n,n);
   int count = 0;
-  double elements [n*n] = {1,4,3,5,9,8,
-                           4,2,5,6,7,3,
-                           3,5,3,7,5,2,
-                           5,6,7,4,8,3,
-                           9,7,5,8,5,5,
-                           8,3,2,3,5,6};
+  double elements [n*n] = {16,2,3,13,
+                           5,11,10,8,
+                           9,7,6,12,
+                           4,14,15,1};;
   for (int i = 1; i <= n; i++)
   {
     for (int j = 1; j <= n; j++)
@@ -576,15 +625,13 @@ void EigenVal()
 
 void NormAll()
 {
-  int n = 6;
+  int n = 4;
   Matrix A(n,n);
   int count = 0;
-  double elements [n*n] = {1,4,3,5,9,8,
-                           4,2,5,6,7,3,
-                           3,5,3,7,5,2,
-                           5,6,7,4,8,3,
-                           9,7,5,8,5,5,
-                           8,3,2,3,5,6};
+  double elements [n*n] = {16,2,3,13,
+                           5,11,10,8,
+                           9,7,6,12,
+                           4,14,15,1};
   for (int i = 1; i <= n; i++)
   {
     for (int j = 1; j <= n; j++)
@@ -605,6 +652,31 @@ void NormAll()
   }
   
   std::cout << norm(A) << std::endl;
+}
+
+void GaussianElimination()
+{
+  int n = 3;
+  Matrix A(n,n);
+  int count = 0;
+  double elements [n*n] = {2,1,-1,
+                           -3,-1,2,
+                           -2,1,2};
+  for (int i = 1; i <= n; i++)
+  {
+    for (int j = 1; j <= n; j++)
+    {
+      A(i,j) = elements[count];
+      count += 1;
+    }
+  }
+
+  Matrix b(3,1);
+  b(1,1) = 8; b(2,1) = -11; b(3,1) = -3;
+  std::cout<< "Gaussian Elimination" << std::endl;
+  print(gaussianElimination(A,b)); 
+  std::cout << "CGS" << std::endl;
+  print(A);
 }
 
 

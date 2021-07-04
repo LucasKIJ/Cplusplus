@@ -21,6 +21,7 @@ namespace MatrixTests
     void LU();
     void Det();
     void QR();
+    void LSQ();
     void HessReduction();
     void EigenVal();
     void NormAll();

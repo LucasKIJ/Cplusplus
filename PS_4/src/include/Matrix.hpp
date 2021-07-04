@@ -67,19 +67,24 @@ public:
    friend Matrix operator*(const double& a,  const Matrix& m);
    friend Matrix operator/(const Matrix& m,  const double& a);
 
+   friend double dot(const Matrix& m1, const Matrix& m2);
+
    // Gaussian elimination solver
-   friend Matrix gaussianElimination(const Matrix A, const Matrix b);
+   friend Matrix gaussianElimination(const Matrix& A_orig, const Matrix& b);
+   friend Matrix cgs(const Matrix& A, const Matrix& b);
    friend Matrix operator/(const Matrix b, const Matrix A);
 
    // LU Decomposition
-   friend std::tuple<Matrix, Matrix, Matrix> lu(const Matrix& A);
+   friend std::tuple<Matrix, Matrix, Matrix, int> lu(const Matrix& A);
 
    // Determinant
    double det() const;
    friend double det(const Matrix& A);
 
    // QR factorisation
-   friend std::tuple <Matrix, Matrix> qr(const Matrix& A);
+   friend std::tuple <Matrix, Matrix> qr(const Matrix& A, bool reduced = false);
+   // Least-squares
+   friend Matrix lsq(const Matrix& A, const Matrix& b);
    // QR Algorithm
    friend Matrix hessenbergReduction(const Matrix& A);
    friend Matrix eigenVal(const Matrix& A, double tol = 1.0e-10);
@@ -134,11 +139,6 @@ public:
    friend double norm(Matrix& m, int p);
    friend double norm(Matrix& m, std::string p);
    friend int* size(const Matrix& m);
-
-
-
-
-
 };
 
 
@@ -156,15 +156,20 @@ Matrix operator*(const Matrix& m, const double& a);
 Matrix operator*(const double& a, const Matrix& m);
 Matrix operator/(const Matrix& m, const double& a);
 
+double dot(const Matrix& m1, const Matrix& m2);
+
 // Solver
-Matrix gaussianElimination(const Matrix& A, const Matrix& b);
+Matrix gaussianElimination(const Matrix& A_orig, const Matrix& b);
+Matrix cgs(const Matrix& A, const Matrix& b);
 Matrix operator/(const Matrix& m1, const Matrix& m2);
 
 // LU Decomposition
-std::tuple <Matrix, Matrix, Matrix> lu(const Matrix& A);
+std::tuple <Matrix, Matrix, Matrix, int> lu(const Matrix& A);
 
 // QR
-std::tuple <Matrix, Matrix> qr(const Matrix& A);
+std::tuple <Matrix, Matrix> qr(const Matrix& A, bool reduced);
+// Least-squares
+Matrix lsq(const Matrix& A, const Matrix& b);
 // QR Algorithm
 Matrix hessenbergReduction(const Matrix& A);
 Matrix eigenVal(const Matrix& A, double tol);
