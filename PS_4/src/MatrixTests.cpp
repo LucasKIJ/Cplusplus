@@ -20,10 +20,10 @@ void RunTests()
   Eye();
   LU();
   Det();
-  QR();
-  LSQ();
+  //QR();
+  //LSQ();
   //HessReduction();
-  EigenVal();
+  //EigenVal();
   //NormAll();
   //GaussianElimination();
 }
@@ -519,165 +519,157 @@ void Det()
 }
 
 
-void QR()
-{
-  std::cout << "QR" <<std::endl;
-  Matrix A(4,3);
-  int count = 0;
-  double elements [12] = {1,4,3,
-                         4,1,5,
-                         3,5,1,
-                         5,6,7};
-  for (int i = 1; i <= 4; i++)
-  {
-    for (int j = 1; j <= 3; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
+// void QR()
+// {
+//   std::cout << "QR" <<std::endl;
+//   Matrix A(4,3);
+//   int count = 0;
+//   double elements [12] = {1,4,3,
+//                          4,1,5,
+//                          3,5,1,
+//                          5,6,7};
+//   for (int i = 1; i <= 4; i++)
+//   {
+//     for (int j = 1; j <= 3; j++)
+//     {
+//       A(i,j) = elements[count];
+//       count += 1;
+//     }
+//   }
   
 
-  Matrix Q(4,3);
-  Matrix R(3,3);
-  std::tie(Q, R) = qr(A, true);
-  std::cout << Q << std::endl;
-  std::cout << R << std::endl;
- // double detR = 1;
-  //std::cout << Q.T() * Q << std::endl;
-  //std::cout << det(R) << " = " << detR << std::endl;
-  std::cout << Q*R << std::endl;
+//   Matrix Q(4,3);
+//   Matrix R(3,3);
+//   std::tie(Q, R) = qr(A, true);
+//   std::cout << Q << std::endl;
+//   std::cout << R << std::endl;
+//  // double detR = 1;
+//   //std::cout << Q.T() * Q << std::endl;
+//   //std::cout << det(R) << " = " << detR << std::endl;
+//   std::cout << Q*R << std::endl;
 
-}
+// }
 
-void LSQ()
-{
-  std::cout << "LSQ" <<std::endl;
-  Matrix A(4,3);
-  int count = 0;
-  double elements [12] = {1,4,3,
-                         4,1,5,
-                         3,5,1,
-                         5,6,7};
-  for (int i = 1; i <= 4; i++)
-  {
-    for (int j = 1; j <= 3; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
+// void LSQ()
+// {
+//   std::cout << "LSQ" <<std::endl;
+//   Matrix A(4,3);
+//   int count = 0;
+//   double elements [12] = {1,4,3,
+//                          4,1,5,
+//                          3,5,1,
+//                          5,6,7};
+//   for (int i = 1; i <= 4; i++)
+//   {
+//     for (int j = 1; j <= 3; j++)
+//     {
+//       A(i,j) = elements[count];
+//       count += 1;
+//     }
+//   }
 
-  Matrix b(4,1);
-  b(1,1) = 1; b(2,1) = 2; b(3,1) = 3; b(4,1) = 4;
+//   Matrix b(4,1);
+//   b(1,1) = 1; b(2,1) = 2; b(3,1) = 3; b(4,1) = 4;
   
-  Matrix x = lsq(A, b);
-  std::cout << x << std::endl;
+//   Matrix x = lsq(A, b);
 
-}
+// }
 
 
-void HessReduction()
-{
-  Matrix A(4,4);
-  int count = 0;
-  double elements [16] = {1,4,3,5,
-                         4,1,5,6,
-                         3,5,1,7,
-                         5,6,7,1};
-  for (int i = 1; i <= 4; i++)
-  {
-    for (int j = 1; j <= 4; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
+// void HessReduction()
+// {
+//   Matrix A(4,4);
+//   int count = 0;
+//   double elements [16] = {1,4,3,5,
+//                          4,1,5,6,
+//                          3,5,1,7,
+//                          5,6,7,1};
+//   for (int i = 1; i <= 4; i++)
+//   {
+//     for (int j = 1; j <= 4; j++)
+//     {
+//       A(i,j) = elements[count];
+//       count += 1;
+//     }
+//   }
 
-  std::cout <<  hessenbergReduction(A) << std::endl;
+//   std::cout <<  hessenbergReduction(A) << std::endl;
 
-}
+// }
 
-void EigenVal()
-{ 
-  {
-    int n = 4;
-  Matrix A(n,n);
-  int count = 0;
-  double elements [n*n] = {16,2,3,13,
-                           5,11,10,8,
-                           9,7,6,12,
-                           4,14,15,1};;
-  for (int i = 1; i <= n; i++)
-  {
-    for (int j = 1; j <= n; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
+// void EigenVal()
+// { 
+//   {
+//     int n = 4;
+//   Matrix A(n,n);
+//   int count = 0;
+//   double elements [n*n] = {16,2,3,13,
+//                            5,11,10,8,
+//                            9,7,6,12,
+//                            4,14,15,1};;
+//   for (int i = 1; i <= n; i++)
+//   {
+//     for (int j = 1; j <= n; j++)
+//     {
+//       A(i,j) = elements[count];
+//       count += 1;
+//     }
+//   }
 
-  Matrix vals(n,1);
-  vals = eigenVal(A);
-  print(vals);
-  }
-}
+//   Matrix vals(n,1);
+//   vals = eigenVal(A);
+//   print(vals);
+//   }
+// }
 
-void NormAll()
-{
-  int n = 4;
-  Matrix A(n,n);
-  int count = 0;
-  double elements [n*n] = {16,2,3,13,
-                           5,11,10,8,
-                           9,7,6,12,
-                           4,14,15,1};
-  for (int i = 1; i <= n; i++)
-  {
-    for (int j = 1; j <= n; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
-  try
-  {
-    {
-      norm(A);
-    }
-  }
-  catch(Exception &e)
-  {
-    e.DebugPrint();
-  }
+// void NormAll()
+// {
+//   int n = 4;
+//   Matrix A(n,n);
+//   int count = 0;
+//   double elements [n*n] = {16,2,3,13,
+//                            5,11,10,8,
+//                            9,7,6,12,
+//                            4,14,15,1};
+//   for (int i = 1; i <= n; i++)
+//   {
+//     for (int j = 1; j <= n; j++)
+//     {
+//       A(i,j) = elements[count];
+//       count += 1;
+//     }
+//   }
+//   try
+//   {
+//     {
+//       norm(A);
+//     }
+//   }
+//   catch(Exception &e)
+//   {
+//     e.DebugPrint();
+//   }
   
-  std::cout << norm(A) << std::endl;
-}
+//   std::cout << norm(A) << std::endl;
+// }
 
-void GaussianElimination()
-{
-  int n = 3;
-  Matrix A(n,n);
-  int count = 0;
-  double elements [n*n] = {2,1,-1,
-                           -3,-1,2,
-                           -2,1,2};
-  for (int i = 1; i <= n; i++)
-  {
-    for (int j = 1; j <= n; j++)
-    {
-      A(i,j) = elements[count];
-      count += 1;
-    }
-  }
-
-  Matrix b(3,1);
-  b(1,1) = 8; b(2,1) = -11; b(3,1) = -3;
-  std::cout<< "Gaussian Elimination" << std::endl;
-  print(gaussianElimination(A,b)); 
-  std::cout << "CGS" << std::endl;
-  print(A);
-}
+// void GaussianElimination()
+// {
+//   int n = 3;
+//   Matrix A(n,n);
+//   int count = 0;
+//   double elements [n*n] = {2,1,-1,
+//                            -3,-1,2,
+//                            -2,1,2};
+//   for (int i = 1; i <= n; i++)
+//   {
+//     for (int j = 1; j <= n; j++)
+//     {
+//       A(i,j) = elements[count];
+//       count += 1;
+//     }
+//   }
+// }
 
 
 }

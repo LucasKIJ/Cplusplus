@@ -1,6 +1,7 @@
 #ifndef LINALGEXDEF
 #define LINALGEXDEF
 #include "Matrix.hpp"
+#include "Vector.hpp"
 
 namespace Examples
 {
@@ -11,6 +12,6 @@ namespace Examples
     void QRFactorisation();
     void LeastSquares();
     void HessReduction();
-    void eigenVal();
+    void EigenVal();
 }
 #endif

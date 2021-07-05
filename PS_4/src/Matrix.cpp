@@ -622,7 +622,7 @@ void print(const Matrix& m)
     {
       // If non start add spacing between elements
       std::cout << " ";
-      std::cout << (m.getValue(i,j) > 0 ? " " : "") << m.getValue(i,j);
+      std::cout << (m.getValue(i,j) >= 0 ? " " : "") << m.getValue(i,j);
     }
     // Add end bracket at end of row
       std::cout << " ]" << std::endl;
@@ -653,7 +653,7 @@ std::ostream& operator<<(std::ostream& output, const Matrix& m)
       // Add space in between elements
       output << " ";
       // If non negative add extra space
-      output << (m.getValue(row,col) > 0 ? " " : "") << m.getValue(row,col);
+      output << (m.getValue(row,col) >= 0 ? " " : "") << m.getValue(row,col);
     }
     // Add ] at the end of the row
     output << " ]" << std::endl;
@@ -1300,9 +1300,8 @@ std::tuple <Matrix, Matrix> qr(const Matrix& A, bool reduced)
   
   // Sign and norm
   double g;
-  double s;
-
-  for (int k=0; k < m-1; k++)
+  double s;;
+  for (int k=0; k < n; k++)
   {
 
     // Construct Householder x(1:k-1) = 0; x(k:m) = R
@@ -1318,10 +1317,9 @@ std::tuple <Matrix, Matrix> qr(const Matrix& A, bool reduced)
     
     // Get sign(x(k)) * norm(x)
     g = (double) ((x.getValue(k) > 0) - (x.getValue(k) < 0)) * norm(x);
-
+    
     // x(k) = x(k) + sign(x(k)) * norm(x)
     x.setValue(x.getValue(k) + g, k);
-
     s = norm(x);
     if (s != 0)
     {

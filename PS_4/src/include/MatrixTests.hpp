@@ -25,8 +25,5 @@ namespace MatrixTests
     void HessReduction();
     void EigenVal();
     void NormAll();
-    
-    void Size();
-    void GaussianElimination();
 }
 #endif

@@ -5,6 +5,7 @@
 #include "Vector.hpp"
 #include "Matrix.hpp"
 #include "MatrixTests.hpp"
+#include "Examples.hpp"
 
 
 int main(int argc, char* argv[])
@@ -12,7 +13,8 @@ int main(int argc, char* argv[])
   //This would  produce a compiler warning (there is no default constructor)
   try
   {  
-    MatrixTests::RunTests();
+    //MatrixTests::RunTests();
+    Examples::RunExamples();
   }
   catch (Exception &ex)
   {
