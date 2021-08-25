@@ -1,11 +1,9 @@
 #ifndef EXCEPTIONDEF
 #define EXCEPTIONDEF
 
-
 //  *****************
 //  *  Exception class  *
 //  *****************
-
 
 //  Exceptions thrown by the class of vectors are dealt with by this class
 
@@ -16,13 +14,9 @@
 
 //  the function DebugPrint() prints details of the error
 
-
-
-
 #include <string>
 
-class Exception
-{
+class Exception {
 public:
   std::string problem, summary;
   Exception(std::string sum, std::string problem);
